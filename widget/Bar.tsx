@@ -19,14 +19,6 @@ export default function Bar(gdkmonitor: Gdk.Monitor) {
       application={app}
     >
       <centerbox cssName="centerbox">
-        <button
-          $type="start"
-          onClicked={() => execAsync("echo hello").then(console.log)}
-          hexpand
-          halign={Gtk.Align.CENTER}
-        >
-          <label label="Welcome to AGS!" />
-        </button>
         <Workspace count={5} />
         <menubutton $type="end" hexpand halign={Gtk.Align.CENTER}>
           <label label={time} />
