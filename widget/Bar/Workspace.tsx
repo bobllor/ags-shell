@@ -2,6 +2,7 @@ import { State } from "ags";
 import Hyprland from "gi://AstalHyprland";
 import { Accessor, createBinding, createComputed, createEffect, createState, Setter } from "gnim";
 
+
 export default function Workspace({count}: WorkspaceProps): JSX.Element{
     // i tried adding this in the class but it does not work.
     // i will have to probe the discord to see if it's possible, for now
@@ -13,6 +14,7 @@ export default function Workspace({count}: WorkspaceProps): JSX.Element{
 
     return (
         <box
+        class="workspaces"
         $type="center">
             {ws.getWorkspaceButtons().map(button => (
                 button
@@ -31,10 +33,7 @@ class Workspaces{
         this.workspaces = [...Array(wsCount).keys()].map(count => count + 1);
 
         this.wsState = wsStateProps;
-
-        if(this.wsState.wsId.peek() < 0){
-            this.wsState.setWsId(this.hypr.focusedWorkspace.get_id());
-        }
+        this.wsState.setWsId(this.hypr.focusedWorkspace.get_id());
     }
     
     getWorkspaceButtons(): Array<JSX.Element>{ 
@@ -42,13 +41,19 @@ class Workspaces{
 
         for(const num of this.workspaces){
             buttons.push(
-                <button 
+                <button
+                canShrink
+                class={this.wsState.wsId.as(val => {
+                    return val == num ? "is-focused" : ""
+                })}
                 onClicked={() => {
+                    if(this.wsState.wsId.peek() == num){
+                        return;
+                    }
+
                     this.wsState.setWsId(num);
                     this.hypr.dispatch("workspace", num.toString());
-                }}>
-                    {num}
-                </button>
+                }} />
             )
         }
 
@@ -59,7 +64,7 @@ class Workspaces{
     // this is just used to test out side effects
     useWorkspaceHook(){
         createEffect(() => {
-            console.log(this.wsState.wsId());
+            print(this.wsState.wsId());
         })
     }
 }
