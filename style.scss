@@ -7,14 +7,22 @@ window.Bar {
   color: $fg-color;
   font-weight: bold;
 
-  > centerbox {
-    background: $bg-color;
-    border-radius: 10px;
-    margin: 8px;
-  }
+  .workspaces{
+    $padding-x: #{15px};
 
-  button {
-    border-radius: 8px;
-    margin: 2px;
+    background: $bg-color;
+    padding-left: $padding-x;
+    padding-right: $padding-x;
+    border-radius: 5px;
+    border: 5px;
+    border-color: white;
+
+    button{
+      background: green;
+    }
+    button.is-focused{
+      background: white;
+      min-width: 30px;
+    }
   }
 }
