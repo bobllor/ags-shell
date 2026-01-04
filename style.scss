@@ -18,11 +18,27 @@ window.Bar {
     border-color: white;
 
     button{
-      background: green;
+      background: transparent;
     }
     button.is-focused{
       background: white;
       min-width: 30px;
     }
+  }
+}
+
+window.AppLauncher{
+  background: transparent;
+  $padding: #{15px};
+  color: white;
+
+  .app-box{
+    background: $bg-color;
+    padding: $padding; 
+  }
+
+  .app-search{
+    background: gray;
+    min-width: 500px;
   }
 }
