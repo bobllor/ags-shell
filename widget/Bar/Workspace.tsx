@@ -3,14 +3,11 @@ import Hyprland from "gi://AstalHyprland";
 import { Accessor, createBinding, createComputed, createEffect, createState, Setter } from "gnim";
 
 
-export default function Workspace({count}: WorkspaceProps): JSX.Element{
+export default function Workspace({workspaceAmount}: Props): JSX.Element{
     // i tried adding this in the class but it does not work.
     // i will have to probe the discord to see if it's possible, for now
     // i'm passing the state as a prop into the class.
-    const [wsID, setWsID]: State<number> = createState(-1);
-    const ws: Workspaces = new Workspaces(count, {wsId: wsID, setWsId: setWsID});
-
-    ws.useWorkspaceHook();
+    const ws: Workspaces = new Workspaces(workspaceAmount);
 
     return (
         <box
@@ -27,13 +24,11 @@ class Workspaces{
     private hypr: Hyprland.Hyprland = Hyprland.get_default();
     private workspaces: Array<number> = [];
 
-    wsState: WorkspaceState;
+    private currWsID: number = -1;
 
-    constructor(wsCount: number, wsStateProps: WorkspaceState){
+    constructor(wsCount: number = 5){
         this.workspaces = [...Array(wsCount).keys()].map(count => count + 1);
 
-        this.wsState = wsStateProps;
-        this.wsState.setWsId(this.hypr.focusedWorkspace.get_id());
     }
     
     getWorkspaceButtons(): Array<JSX.Element>{ 
@@ -43,15 +38,15 @@ class Workspaces{
             buttons.push(
                 <button
                 canShrink
-                class={this.wsState.wsId.as(val => {
-                    return val == num ? "is-focused" : ""
+                class={createBinding(this.hypr, "focusedWorkspace").as(ws => {
+                    return ws.id == num ? "is-focused" : "";
                 })}
                 onClicked={() => {
-                    if(this.wsState.wsId.peek() == num){
+                    if(this.currWsID == num){
                         return;
                     }
 
-                    this.wsState.setWsId(num);
+                    this.currWsID = num;
                     this.hypr.dispatch("workspace", num.toString());
                 }} />
             )
@@ -59,21 +54,8 @@ class Workspaces{
 
         return buttons;
     }
-
-    // NOTE: this is a test hook and not meant to be used in final.
-    // this is just used to test out side effects
-    useWorkspaceHook(){
-        createEffect(() => {
-            print(this.wsState.wsId());
-        })
-    }
 }
 
-type WorkspaceProps = {
-    count: number,
-};
-
-type WorkspaceState = {
-    wsId: Accessor<number>,
-    setWsId: Setter<number>,
+type Props = {
+    workspaceAmount: number,
 };
