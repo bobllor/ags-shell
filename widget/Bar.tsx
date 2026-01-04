@@ -19,7 +19,7 @@ export default function Bar(gdkmonitor: Gdk.Monitor) {
       application={app}
     >
       <centerbox cssName="centerbox">
-        <Workspace count={5} />
+        <Workspace workspaceAmount={5} />
         <menubutton $type="end" hexpand halign={Gtk.Align.CENTER}>
           <label label={time} />
           <popover>
