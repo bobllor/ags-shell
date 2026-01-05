@@ -4,18 +4,31 @@ import { Accessor, For } from "gnim";
 
 export default function AppList({applications}: Props): JSX.Element{
     return (
-        <box orientation={Gtk.Orientation.VERTICAL}>
-            <For each={applications}>
-                {(app => (
+        <scrolledwindow
+        propagateNaturalHeight
+        propagateNaturalWidth>
+            <box
+            orientation={Gtk.Orientation.VERTICAL}>
+                <For each={applications}>
+                    {(app => (
+                        <button>
+                            <box>
+                                <image iconName={app.iconName}/>
+                                <label label={app.name} />
+                            </box>
+                        </button>
+                    ))} 
+                </For>
+                <box
+                visible={applications(v => v.length == 0)}>
                     <button>
                         <box>
-                            <image iconName={app.iconName}/>
-                            <label label={app.name} />
+                            <label label={"No applications found"} />
                         </box>
                     </button>
-                ))} 
-            </For>
-        </box>
+                </box>
+            </box>
+        </scrolledwindow>
     )
 }
 
