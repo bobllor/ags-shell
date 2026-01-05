@@ -35,10 +35,16 @@ window.AppLauncher{
   .app-box{
     background: $bg-color;
     padding: $padding; 
-  }
 
-  .app-search{
-    background: gray;
-    min-width: 500px;
+    .app-search{
+      background: gray;
+      min-width: 500px;
+      margin-bottom: 3px;
+    }
+
+    .app-list-entry{
+      margin: 3px;
+      padding: $padding;
+    }
   }
 }
