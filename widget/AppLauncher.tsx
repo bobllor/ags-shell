@@ -1,8 +1,8 @@
 import { Astal, Gdk, Gtk } from "ags/gtk4"
-import { createEffect, createState, For, State } from "gnim"
-import { Search } from "./AppBox/Search";
+import { createEffect, createState, State } from "gnim"
+import { Search } from "./AppLauncher/AppBox/Search";
 import AstalApps from "gi://AstalApps?version=0.1";
-import AppList from "./AppBox/AppList";
+import AppList from "./AppLauncher/AppBox/AppList";
 
 export default function AppLauncher({gdkmonitor, visible = true}: Props): JSX.Element{
     const astalApp: AstalApps.Apps = new AstalApps.Apps();
@@ -11,20 +11,15 @@ export default function AppLauncher({gdkmonitor, visible = true}: Props): JSX.El
     const [applications, setApplications]: State<AstalApps.Application[]> = createState(new Array<AstalApps.Application>());
 
     createEffect(() => {
-        if(textVal() != ""){
-            const foundApplications: AstalApps.Application[] = astalApp.exact_query(textVal());
+        const foundApplications: AstalApps.Application[] = astalApp.exact_query(textVal());
 
-            setApplications(() => {
-                if(foundApplications.length > 8){
-                    return [...foundApplications].slice(0, 8);
-                }
-                
-                return [...foundApplications];
-            });
-        }else{
-            // if it is empty then don't display anything
-            setApplications([]);
-        }
+        setApplications(() => {
+            if(foundApplications.length > 8){
+                return [...foundApplications].slice(0, 8);
+            }
+            
+            return [...foundApplications];
+        });
     })
 
 
@@ -44,7 +39,7 @@ export default function AppLauncher({gdkmonitor, visible = true}: Props): JSX.El
             <box 
             orientation={Gtk.Orientation.VERTICAL}
             class="app-box">
-                <Search setTextVal={setTextVal} searchEntry={searchEntry}/>
+                <Search searchEntry={searchEntry} setTextVal={setTextVal} />
                 <AppList applications={applications} />
             </box>
         </window>
