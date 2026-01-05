@@ -1,6 +1,5 @@
-import { State } from "ags";
 import Hyprland from "gi://AstalHyprland";
-import { Accessor, createBinding, createComputed, createEffect, createState, Setter } from "gnim";
+import { Accessor, createBinding } from "gnim";
 
 
 export default function Workspace({workspaceAmount}: Props): JSX.Element{
