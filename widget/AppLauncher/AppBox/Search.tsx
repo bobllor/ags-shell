@@ -1,18 +1,20 @@
 import { Gtk } from "ags/gtk4";
-import { Setter } from "gnim";
+import { Accessor, Setter } from "gnim";
 
-export function Search({searchEntry = undefined, setTextVal}: Props): JSX.Element{
+export function Search({setEntry, setTextVal}: Props): JSX.Element{
     return (
         <box>
             <entry
-            $={ref => (searchEntry = ref)}
+            $={ref => setEntry(ref)}
             onNotifyText={({ text }) => setTextVal(text)}
-            class="app-search" />
+            class="app-search" 
+            canFocus={false}
+            canTarget={false} />
         </box>
     )
 }
 
 type Props = {
-    searchEntry?: Gtk.Entry,
+    setEntry: Setter<Gtk.Entry>,
     setTextVal: Setter<string>,
 }
