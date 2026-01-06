@@ -1,5 +1,5 @@
 import { Astal, Gdk, Gtk } from "ags/gtk4"
-import { createEffect, createState, State } from "gnim"
+import { createEffect, createState, State, With } from "gnim"
 import { Search } from "./AppLauncher/AppBox/Search";
 import AstalApps from "gi://AstalApps?version=0.1";
 import AppList from "./AppLauncher/AppBox/AppList";
@@ -24,6 +24,7 @@ export default function AppLauncher({gdkmonitor, visible = true}: Props): JSX.El
     const [searchEntry, setSearchEntry] = createState(new Gtk.Entry);
     const [appBox, setAppBox] = createState(new Gtk.Box);
 
+
     return (
         <window
         class="AppLauncher"
@@ -39,7 +40,11 @@ export default function AppLauncher({gdkmonitor, visible = true}: Props): JSX.El
             orientation={Gtk.Orientation.VERTICAL}
             class="app-box">
                 <Search setEntry={setSearchEntry} setTextVal={setTextVal}/>
-                <AppList applications={applications} appWindow={appWindow()}/>
+                <With value={appWindow}>
+                    {w => w.cssClasses[0] != "background" &&
+                        <AppList applications={applications} appWindow={w}/>
+                    }
+                </With>
             </box>
         </window>
     )
