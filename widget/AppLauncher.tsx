@@ -1,10 +1,11 @@
 import { Astal, Gdk, Gtk } from "ags/gtk4"
-import { createEffect, createState, State, With } from "gnim"
-import { Search } from "./AppLauncher/AppBox/Search";
+import { createEffect, createState, onCleanup, State, With } from "gnim"
+import AppSearch from "./AppLauncher/AppSearch";
+import AppList  from "./AppLauncher/AppList";
 import AstalApps from "gi://AstalApps?version=0.1";
-import AppList from "./AppLauncher/AppBox/AppList";
 import Graphene from "gi://Graphene?version=1.0";
 import { getKey } from "../utils";
+import app from "ags/gtk4/app";
 
 export default function AppLauncher({gdkmonitor, visible = true}: Props): JSX.Element{
     const astalApp: AstalApps.Apps = new AstalApps.Apps();
@@ -24,10 +25,15 @@ export default function AppLauncher({gdkmonitor, visible = true}: Props): JSX.El
     const [searchEntry, setSearchEntry] = createState(new Gtk.Entry);
     const [appBox, setAppBox] = createState(new Gtk.Box);
 
+    onCleanup(() => {
+        appWindow().destroy();
+    })
 
     return (
         <window
+        name="AppLauncher"
         class="AppLauncher"
+        application={app}
         $={(ref) => setAppWindow(ref)}
         visible={visible}
         exclusivity={Astal.Exclusivity.IGNORE}
@@ -39,7 +45,7 @@ export default function AppLauncher({gdkmonitor, visible = true}: Props): JSX.El
             $={(ref) => setAppBox(ref)}
             orientation={Gtk.Orientation.VERTICAL}
             class="app-box">
-                <Search setEntry={setSearchEntry} setTextVal={setTextVal}/>
+                <AppSearch setEntry={setSearchEntry} setTextVal={setTextVal}/>
                 <With value={appWindow}>
                     {w => w.cssClasses[0] != "background" &&
                         <AppList applications={applications} appWindow={w}/>
