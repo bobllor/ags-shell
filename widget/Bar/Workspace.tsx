@@ -27,7 +27,6 @@ class Workspaces{
 
     constructor(wsCount: number = 5){
         this.workspaces = [...Array(wsCount).keys()].map(count => count + 1);
-
     }
     
     getWorkspaceButtons(): Array<JSX.Element>{ 
