@@ -45,6 +45,12 @@ window.AppLauncher{
     .app-list-entry{
       margin: 3px;
       padding: $padding;
+      outline-color: green;
+    }
+
+    .is-focused{
+      outline-color: green;
+      outline-width: 2px;
     }
   }
 }
