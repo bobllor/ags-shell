@@ -8,7 +8,13 @@ app.start({
   main() {
     app.get_monitors().map(monitor => {
       Bar(monitor);
-      AppLauncher({gdkmonitor: monitor});
+
+      const appLauncher = app.get_window("AppLauncher");
+      AppLauncher({gdkmonitor: monitor, visible: false});
+
+      if(appLauncher){
+        appLauncher.visible = true;
+      }
     })
   },
 })
