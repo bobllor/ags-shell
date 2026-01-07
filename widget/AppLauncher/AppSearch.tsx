@@ -1,7 +1,7 @@
 import { Gtk } from "ags/gtk4";
 import { Accessor, Setter } from "gnim";
 
-export function Search({setEntry, setTextVal}: Props): JSX.Element{
+export default function AppSearch({setEntry, setTextVal}: Props): JSX.Element{
     return (
         <box>
             <entry
